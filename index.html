@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle, #1a1a1a, #000);
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    margin-top: 100px;
+    z-index: 2;
+    position: relative;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: gold;
+    color: black;
+    cursor: pointer;
+}
+
+#gift {
+    display: none;
+    margin-top: 30px;
+    font-size: 22px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="container">
+    <h1>🎂 Happy Birthday @Owner_Ronaldo7 🎂</h1>
+    
+    <button onclick="startCelebration()">🎁 Open Your Gift</button>
+
+    <div id="gift">
+        <p>🔥 You are not just special... you are a LEGEND 🔥</p>
+        <p>🚀 Aaj cake, kal duniya tere naam 🚀</p>
+        <p>👑 Stay King Always 👑</p>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function createFirework(x, y) {
+    for (let i = 0; i < 100; i++) {
+        particles.push({
+            x: x,
+            y: y,
+            radius: Math.random() * 3,
+            color: "hsl(" + Math.random() * 360 + ", 100%, 50%)",
+            speedX: (Math.random() - 0.5) * 6,
+            speedY: (Math.random() - 0.5) * 6,
+            life: 100
+        });
+    }
+}
+
+function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.life--;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+
+        if (p.life <= 0) {
+            particles.splice(index, 1);
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+// Confetti
+function confetti() {
+    for (let i = 0; i < 50; i++) {
+        createFirework(Math.random() * canvas.width, Math.random() * canvas.height);
+    }
+}
+
+// Button click
+function startCelebration() {
+    document.getElementById("gift").style.display = "block";
+    confetti();
+
+    setInterval(() => {
+        createFirework(Math.random() * canvas.width, Math.random() * canvas.height);
+    }, 800);
+}
+</script>
+
+</body>
+</html>
